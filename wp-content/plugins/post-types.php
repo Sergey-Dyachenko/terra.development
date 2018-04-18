@@ -57,7 +57,6 @@ add_action('add_meta_boxes', 'dsadev_event_add_metabox');
 function dsadev_echo_event_metabox($post){
     wp_nonce_field(basename(__FILE__), 'dsadev-event-detail-nonce');
     $event_start_date = get_post_meta($post->ID, 'event-start-date', true);
-    var_dump($event_start_date);
     $event_end_date = get_post_meta($post->ID, 'event-end-date', true);
     $event_place =   get_post_meta($post->ID, 'event-place', true);
     $event_start_date = ! empty($event_start_date) ? $event_start_date : time();
@@ -75,14 +74,13 @@ function dsadev_echo_event_metabox($post){
 
 <?php }
 
-function dsadev_save_event_info($post){
+function dsadev_save_event_info($post_id){
 
     if ('event' != $_POST['post_type']){
         return;
     }
-
-    $is_autosave = wp_is_post_autosave($post->ID);
-    $is_revision = wp_is_post_revision($post->ID);
+    $is_autosave = wp_is_post_autosave($post_id);
+    $is_revision = wp_is_post_revision($post_id);
     $is_valid_nonce = (isset($_POST['dsadev-event-detail-nonce']) && (wp_verify_nonce($_POST['dsadev-event-detail-nonce'], basename(__FILE__))))? true : false;
 
     if($is_autosave || $is_revision || ! $is_valid_nonce){
@@ -91,16 +89,17 @@ function dsadev_save_event_info($post){
     }
 
     if (isset($_POST['dsadev-event-start-date'])){
-        update_post_meta($post->ID, 'event-start-date', strtotime('dsadev-event-start-date'));
+        update_post_meta($post_id, 'event-start-date', strtotime($_POST['dsadev-event-start-date']));
 
     }
 
     if (isset($_POST['dsadev-event-end-date'])){
-        update_post_meta($post->ID, 'event-end-date', strtotime('dsadev-event-end-date'));
+        update_post_meta($post_id, 'event-end-date', strtotime($_POST['dsadev-event-end-date']));
     }
 
     if (isset ($_POST['dsadev-event-place'])){
-        update_post_meta($post->ID, 'event-place', sanitize_text_field('dsadev-event-place'));
+        update_post_meta($post_id, 'event-place', sanitize_text_field($_POST['dsadev-event-place']));
+
     }
 
 

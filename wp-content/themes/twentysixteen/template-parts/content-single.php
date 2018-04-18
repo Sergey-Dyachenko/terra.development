@@ -19,7 +19,12 @@
 
 	<div class="entry-content">
 		<?php
-			the_content();
+
+            the_content();
+
+            $event_place  = get_post_meta($id, 'event_place', true);
+
+            var_dump($event_place);
 
 			wp_link_pages( array(
 				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
