@@ -22,9 +22,13 @@
 
             the_content();
 
-            $event_place  = get_post_meta($id, 'event_place', true);
+            //$id = get_the_ID();
 
-            var_dump($event_place);
+            //var_dump($id);
+
+            $event_place  = get_post_meta($id, 'event-place', true);
+
+            echo " Place: $event_place";
 
 			wp_link_pages( array(
 				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
